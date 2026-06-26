@@ -57,7 +57,7 @@ public class Inicio extends JFrame {
             if (p != null) {
                 lblResultado.setText(
                         p.getNombre() +
-                                " | Precio final: " + p.calcularPrecio()
+                                " | Precio final: " + p.getPrecioFinal()
                 );
             } else {
                 lblResultado.setText("Producto no encontrado");
@@ -67,5 +67,7 @@ public class Inicio extends JFrame {
             lblResultado.setText("ID inválido");
         }
     }
+
+
 }
 

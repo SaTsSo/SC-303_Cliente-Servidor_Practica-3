@@ -1,6 +1,6 @@
 package main.java;
 
-public class ProductoDescuento extends Producto{
+public class ProductoDescuento extends ProductoBase{
     private double descuento;
 
 
@@ -19,11 +19,10 @@ public class ProductoDescuento extends Producto{
         this.descuento = descuento;
     }
 
-    @Override
-    public double calcularPrecio() {
 
+    @Override
+    public double getPrecioFinal() {
         return super.getPrecio() -
                 (super.getPrecio() * descuento / 100);
     }
-
 }

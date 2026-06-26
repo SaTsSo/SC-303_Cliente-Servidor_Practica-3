@@ -19,7 +19,7 @@ public class ControlCompra {
         double total = 0;
 
         for(ProductoDescuento p : productos){
-            total += p.calcularPrecio();
+            total += p.getPrecioFinal();
         }
 
         return total;
