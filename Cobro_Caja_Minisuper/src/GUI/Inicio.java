@@ -6,6 +6,7 @@ import main.java.Inventario;
 import main.java.Producto;
 import main.java.ProductoDescuento;
 import main.java.StockInsuficienteException;
+import javax.swing.table.DefaultTableModel;
 
 import javax.swing.*;
 
@@ -26,6 +27,8 @@ public class Inicio extends JFrame {
     private JButton btnAgregar;
     private Inventario inventario;
     private Carrito carrito;
+    private JTable tablaCarrito;
+    private DefaultTableModel modeloTabla;
     //
 
     //Constructor
@@ -41,6 +44,7 @@ public class Inicio extends JFrame {
         inventario.cargarDesdeArchivo();
         carrito = new Carrito();
         cargarComboProductos();
+        crearTablaCarrito();
 
         // Parte Eber: Botones Buscar, Guardar y Calcular total
         control = new ControlCompra();
@@ -56,9 +60,7 @@ public class Inicio extends JFrame {
         btnAgregar.addActionListener(e -> agregarAlCarrito());
 
         // TOTAL
-        btnTotal.addActionListener(e -> {
-            lblTotal.setText("Total: " + control.calcularTotal());
-        });
+        btnTotal.addActionListener(e -> calcularTotalTabla());
 
         // GUARDAR
         btnGuardar.addActionListener(e -> {
@@ -129,6 +131,23 @@ public class Inicio extends JFrame {
         try {
             int cantidad = Integer.parseInt(txtCantidad.getText().trim());
             carrito.agregarProducto(producto, cantidad);
+            ProductoDescuento p = new ProductoDescuento(
+                    producto.getCodigo(),
+                    producto.getNombre(),
+                    producto.getPrecio(),
+                    0
+            );
+            control.agregarProducto(p);
+            double precio = producto.getPrecioFinal();
+            double subtotal = precio * cantidad;
+
+            modeloTabla.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getNombre(),
+                    cantidad,
+                    precio,
+                    subtotal
+            });
 
             lblResultado.setText(
                     "Agregado: " + producto.getNombre()
@@ -148,5 +167,31 @@ public class Inicio extends JFrame {
         }
     }
 
+    private void crearTablaCarrito() {
+
+        modeloTabla = new DefaultTableModel();
+
+        modeloTabla.addColumn("Codigo");
+        modeloTabla.addColumn("Producto");
+        modeloTabla.addColumn("Cantidad");
+        modeloTabla.addColumn("Precio");
+        modeloTabla.addColumn("Subtotal");
+
+        tablaCarrito.setModel(modeloTabla);
+    }
+    private void calcularTotalTabla() {
+
+        double total = 0;
+
+        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+
+            total += Double.parseDouble(
+                    modeloTabla.getValueAt(i, 4).toString());
+
+        }
+
+        lblTotal.setText("Total: $" + total);
+
+    }
 
 }

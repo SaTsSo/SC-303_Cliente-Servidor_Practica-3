@@ -1,11 +1,12 @@
 package main.java;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.io.EOFException;
 
 public class ControlCompra {
 
@@ -42,56 +43,59 @@ public class ControlCompra {
         return null;
     }
 
-    public void guardarBinario(){
+    public void guardarBinario() {
 
-        PrintWriter out = null;
+        DataOutputStream salida = null;
 
         try {
 
-            out = new PrintWriter(new FileWriter(RutaArchivos.resolver(ARCHIVO)));
+            salida = new DataOutputStream(
+                    new FileOutputStream(RutaArchivos.resolver(ARCHIVO)));
 
             for (ProductoDescuento p : productos) {
-                out.println(
-                        p.getId() + ","
-                                + p.getNombre() + ","
-                                + p.getPrecio() + ","
-                                + p.getDescuento()
-                );
+
+                salida.writeInt(p.getId());
+                salida.writeUTF(p.getNombre());
+                salida.writeDouble(p.getPrecio());
+                salida.writeDouble(p.getDescuento());
+
             }
 
-        } catch (Exception e) {
-            System.out.println("Error guardando archivo: " + e.getMessage());
+            System.out.println("Archivo guardado correctamente");
+
+        } catch (IOException e) {
+
+            System.out.println("Error: " + e.getMessage());
 
         } finally {
-            if (out != null) {
-                out.close();
-            }
-            System.out.println("Proceso terminado");
-        }
 
+            if (salida != null) {
+                try {
+                    salida.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+        }
     }
 
     public void cargar() {
 
         productos.clear();
-        BufferedReader in = null;
+        DataInputStream entrada = null;
 
         try {
 
-            in = new BufferedReader(new FileReader(RutaArchivos.resolver(ARCHIVO)));
-            String linea;
+            entrada = new DataInputStream(
+                    new FileInputStream(RutaArchivos.resolver(ARCHIVO)));
 
-            while ((linea = in.readLine()) != null) {
-                linea = linea.trim();
-                if (linea.isEmpty()) {
-                    continue;
-                }
+            while (true) {
 
-                String[] datos = linea.split(",");
-                int id = Integer.parseInt(datos[0].trim());
-                String nombre = datos[1].trim();
-                double precio = Double.parseDouble(datos[2].trim());
-                double descuento = Double.parseDouble(datos[3].trim());
+                int id = entrada.readInt();
+                String nombre = entrada.readUTF();
+                double precio = entrada.readDouble();
+                double descuento = entrada.readDouble();
 
                 ProductoDescuento p =
                         new ProductoDescuento(id, nombre, precio, descuento);
@@ -99,17 +103,24 @@ public class ControlCompra {
                 productos.add(p);
             }
 
-        } catch (Exception e) {
+        } catch (EOFException e) {
+
+            // Fin del archivo
+
+        } catch (IOException e) {
+
             System.out.println("Error: " + e.getMessage());
 
         } finally {
-            if (in != null) {
+
+            if (entrada != null) {
                 try {
-                    in.close();
+                    entrada.close();
                 } catch (IOException e) {
-                    System.out.println("Error al cerrar archivo: " + e.getMessage());
+                    System.out.println(e.getMessage());
                 }
             }
+
         }
     }
 }
