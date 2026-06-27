@@ -1,0 +1,5 @@
+201,Jabon 90g,8.5,10
+202,Pasta dental,15.0,15
+203,Papel higienico 4 rollos,22.0,5
+204,Cafe 200g,45.0,20
+205,Galletas surtidas,12.0,10

@@ -1,84 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.Inicio">
-  <grid id="27dc6" binding="PanelInicio" layout-manager="GridLayoutManager" row-count="8" column-count="30" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="PanelInicio" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="12">
+    <margin top="16" left="16" bottom="16" right="16"/>
     <constraints>
-      <xy x="20" y="20" width="967" height="400"/>
+      <xy x="20" y="20" width="520" height="380"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <component id="e458c" class="javax.swing.JLabel" binding="lblTotal">
+      <grid id="panelBusqueda" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="8" vgap="8">
+        <margin top="8" left="8" bottom="8" right="8"/>
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Total: "/>
-        </properties>
-      </component>
-      <component id="32268" class="javax.swing.JLabel" binding="lblResultado">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Resultado Busqueda"/>
-        </properties>
-      </component>
-      <hspacer id="50f85">
-        <constraints>
-          <grid row="0" column="20" row-span="5" col-span="9" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <component id="be5b0" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Digite el codigo del producto"/>
-        </properties>
-      </component>
-      <component id="151e1" class="javax.swing.JTextField" binding="txtBuscar">
-        <constraints>
-          <grid row="1" column="0" row-span="3" col-span="20" vsize-policy="0" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
-      </component>
-      <hspacer id="1a331">
+        <border type="etched" title="Busqueda de producto"/>
+        <children>
+          <component id="be5b0" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Codigo:"/>
+            </properties>
+          </component>
+          <component id="151e1" class="javax.swing.JTextField" binding="txtBuscar">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="lblCombo" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Producto:"/>
+            </properties>
+          </component>
+          <component id="cmbProductos" class="javax.swing.JComboBox" binding="cmbProductos">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="b9d26" class="javax.swing.JButton" binding="btnBuscar">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Buscar"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="panelCompra" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="8" vgap="-1">
+        <margin top="8" left="8" bottom="8" right="8"/>
         <constraints>
-          <grid row="7" column="12" row-span="1" col-span="18" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-      </hspacer>
-      <component id="b9d26" class="javax.swing.JButton" binding="btnBuscar">
+        <properties/>
+        <border type="etched" title="Agregar al carrito"/>
+        <children>
+          <component id="lblCantidad" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Cantidad:"/>
+            </properties>
+          </component>
+          <component id="txtCantidad" class="javax.swing.JTextField" binding="txtCantidad">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="4" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="80" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="1"/>
+            </properties>
+          </component>
+          <component id="btnAgregar" class="javax.swing.JButton" binding="btnAgregar">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Agregar al carrito"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="panelResultado" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="8" left="8" bottom="8" right="8"/>
         <constraints>
-          <grid row="7" column="1" row-span="1" col-span="9" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties>
-          <text value="Buscar"/>
-        </properties>
-      </component>
-      <hspacer id="3e8b0">
+        <properties/>
+        <border type="etched" title="Detalle del producto"/>
+        <children>
+          <component id="32268" class="javax.swing.JLabel" binding="lblResultado">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Seleccione o busque un producto para ver su informacion"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="panelAcciones" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="12" vgap="-1">
+        <margin top="8" left="8" bottom="8" right="8"/>
         <constraints>
-          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-      </hspacer>
-      <component id="e54d4" class="javax.swing.JButton" binding="btnTotal">
-        <constraints>
-          <grid row="7" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Calcular Total"/>
-        </properties>
-      </component>
-      <component id="7cb7c" class="javax.swing.JButton" binding="btnGuardar">
-        <constraints>
-          <grid row="7" column="11" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Guardar"/>
-        </properties>
-      </component>
+        <properties/>
+        <border type="etched" title="Caja"/>
+        <children>
+          <component id="e458c" class="javax.swing.JLabel" binding="lblTotal">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Total: $0.00"/>
+            </properties>
+          </component>
+          <component id="e54d4" class="javax.swing.JButton" binding="btnTotal">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Calcular total"/>
+            </properties>
+          </component>
+          <component id="7cb7c" class="javax.swing.JButton" binding="btnGuardar">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Guardar"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

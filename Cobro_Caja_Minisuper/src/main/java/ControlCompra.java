@@ -1,9 +1,15 @@
 package main.java;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class ControlCompra {
+
+    private static final String ARCHIVO = "productos.txt";
 
     private ArrayList<ProductoDescuento> productos;
 
@@ -38,51 +44,54 @@ public class ControlCompra {
 
     public void guardarBinario(){
 
+        PrintWriter out = null;
+
         try {
 
-            DataOutputStream out  = new DataOutputStream(
-                    new FileOutputStream("productos.txt")
-            );
+            out = new PrintWriter(new FileWriter(RutaArchivos.resolver(ARCHIVO)));
 
             for (ProductoDescuento p : productos) {
-
-                out.writeInt(p.getId());
-                out.writeUTF(p.getNombre());
-                out.writeDouble(p.getPrecio());
-                out.writeDouble(p.getDescuento());
+                out.println(
+                        p.getId() + ","
+                                + p.getNombre() + ","
+                                + p.getPrecio() + ","
+                                + p.getDescuento()
+                );
             }
-            out.close();
 
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error guardando archivo: " + e.getMessage());
 
-        }
-        finally {
-            System.out.println(
-                    "Proceso terminado"
-            );
-
-
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+            System.out.println("Proceso terminado");
         }
 
     }
+
     public void cargar() {
 
         productos.clear();
+        BufferedReader in = null;
 
         try {
 
-            DataInputStream in = new DataInputStream(
-                    new FileInputStream("productos.txt")
-            );
+            in = new BufferedReader(new FileReader(RutaArchivos.resolver(ARCHIVO)));
+            String linea;
 
-            while (true) {
+            while ((linea = in.readLine()) != null) {
+                linea = linea.trim();
+                if (linea.isEmpty()) {
+                    continue;
+                }
 
-                int id = in.readInt();
-                String nombre = in.readUTF();
-                double precio = in.readDouble();
-                double descuento = in.readDouble();
+                String[] datos = linea.split(",");
+                int id = Integer.parseInt(datos[0].trim());
+                String nombre = datos[1].trim();
+                double precio = Double.parseDouble(datos[2].trim());
+                double descuento = Double.parseDouble(datos[3].trim());
 
                 ProductoDescuento p =
                         new ProductoDescuento(id, nombre, precio, descuento);
@@ -90,10 +99,17 @@ public class ControlCompra {
                 productos.add(p);
             }
 
-        } catch (EOFException e) {
-
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    System.out.println("Error al cerrar archivo: " + e.getMessage());
+                }
+            }
         }
     }
 }

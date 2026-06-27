@@ -1,33 +1,44 @@
-import java.io.DataInputStream;
-import java.io.FileInputStream;
+package main.java;
+
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ControlArchivo {
 
-    private String ruta = "productos.txt";
+    private static final String ARCHIVO = "inventario.txt";
 
     public static List<Producto> leerProductos() {
 
         List<Producto> listaProductos = new ArrayList<>();
+        BufferedReader lectura = null;
+        String ruta = RutaArchivos.resolver(ARCHIVO);
 
         try {
-            DataInputStream lectura = new DataInputStream(new FileInputStream(ruta));
+            lectura = new BufferedReader(new FileReader(ruta));
+            String linea;
 
-            try {
-                while (true) {
-                    int codigo = lectura.readInt();
-                    String nombre = lectura.readUTF();
-                    double precio = lectura.readDouble();
-                    int stock = lectura.readInt();
-
-                    Producto producto = new Producto(codigo, nombre, precio, stock);
-
-                    listaProductos.add(producto);
+            while ((linea = lectura.readLine()) != null) {
+                linea = linea.trim();
+                if (linea.isEmpty()) {
+                    continue;
                 }
 
-            } catch (EOFException e) {
-                cerrarArchivoLectura(lectura);
+                String[] datos = linea.split(",");
+                if (datos.length < 4) {
+                    System.out.println("Linea invalida (faltan campos): " + linea);
+                    continue;
+                }
+                int codigo = Integer.parseInt(datos[0].trim());
+                String nombre = datos[1].trim();
+                double precio = Double.parseDouble(datos[2].trim());
+                int stock = Integer.parseInt(datos[3].trim());
+
+                Producto producto = new Producto(codigo, nombre, precio, stock);
+                listaProductos.add(producto);
             }
 
         } catch (FileNotFoundException e) {
@@ -35,28 +46,21 @@ public class ControlArchivo {
 
         } catch (IOException e) {
             System.out.println("Error de lectura: " + e.getMessage());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Formato de linea invalido: " + e.getMessage());
+
+        } finally {
+            cerrarArchivoLectura(lectura);
         }
 
         return listaProductos;
     }
 
-
-    public static Producto buscarProducto(int codigoBuscado) {
-
-        List<Producto> productos = leerProductos();
-
-        for (Producto p : productos) {
-            if (p.getCodigo() == codigoBuscado) {
-                return p;
-            }
+    public static void cerrarArchivoLectura(BufferedReader archivo) {
+        if (archivo == null) {
+            return;
         }
-
-        return null;
-    }
-
-
-
-    public static void cerrarArchivoLectura(DataInputStream archivo) {
         try {
             archivo.close();
         } catch (IOException e) {
@@ -64,4 +68,3 @@ public class ControlArchivo {
         }
     }
 }
-

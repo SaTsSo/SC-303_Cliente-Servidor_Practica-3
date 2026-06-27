@@ -1,0 +1,5 @@
+101,Leche entera 1L,18.5,50
+102,Pan blanco,12.0,30
+103,Arroz 1kg,25.0,40
+104,Refresco 600ml,15.0,60
+105,Detergente 1kg,35.0,20

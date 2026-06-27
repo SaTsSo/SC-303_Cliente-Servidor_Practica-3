@@ -1,4 +1,7 @@
+package main.java;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Carrito {
 
@@ -6,8 +9,8 @@ public class Carrito {
     private List<Producto> productos;
 
     //Constructor
-    public Carrito(List<Producto> productos) {
-        productos = new ArrayList<>();
+    public Carrito() {
+        this.productos = new ArrayList<>();
     }
 
     //Getter/Setters
@@ -16,8 +19,9 @@ public class Carrito {
     }
 
     //Metodos
-    public void agregarProducto(Producto producto, int cantidad) {
+    public void agregarProducto(Producto producto, int cantidad) throws StockInsuficienteException {
         validarCantidad(cantidad);
+        producto.reducirStock(cantidad);
 
         for (int i = 0; i < cantidad; i++) {
             productos.add(producto);

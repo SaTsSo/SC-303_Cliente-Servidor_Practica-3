@@ -1,7 +1,11 @@
 package GUI;
 
+import main.java.Carrito;
 import main.java.ControlCompra;
+import main.java.Inventario;
+import main.java.Producto;
 import main.java.ProductoDescuento;
+import main.java.StockInsuficienteException;
 
 import javax.swing.*;
 
@@ -17,14 +21,26 @@ public class Inicio extends JFrame {
     private ControlCompra control;
     //
 
+    private JComboBox<Producto> cmbProductos;
+    private JTextField txtCantidad;
+    private JButton btnAgregar;
+    private Inventario inventario;
+    private Carrito carrito;
+    //
+
     //Constructor
     public Inicio() {
         setContentPane(PanelInicio);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setEnabled(true);
-        setTitle("Notas");
-        setSize(1000, 1000);
-        setVisible(true);
+        setTitle("Cobro Caja - Minisuper");
+        setMinimumSize(new java.awt.Dimension(480, 360));
+        pack();
+        setLocationRelativeTo(null);
+
+        inventario = new Inventario();
+        inventario.cargarDesdeArchivo();
+        carrito = new Carrito();
+        cargarComboProductos();
 
         // Parte Eber: Botones Buscar, Guardar y Calcular total
         control = new ControlCompra();
@@ -32,6 +48,12 @@ public class Inicio extends JFrame {
 
         // BUSCAR
         btnBuscar.addActionListener(e -> buscarProducto());
+
+        // Persona 2: al elegir del combo mostrar producto
+        cmbProductos.addActionListener(e -> seleccionarDelCombo());
+
+        // Persona 2: agregar al carrito con validacion de stock
+        btnAgregar.addActionListener(e -> agregarAlCarrito());
 
         // TOTAL
         btnTotal.addActionListener(e -> {
@@ -43,6 +65,26 @@ public class Inicio extends JFrame {
             control.guardarBinario();
             JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
         });
+
+        setVisible(true);
+    }
+
+    private void cargarComboProductos() {
+        cmbProductos.removeAllItems();
+        for (Producto producto : inventario.getProductos().values()) {
+            cmbProductos.addItem(producto);
+        }
+    }
+
+    private void seleccionarDelCombo() {
+        Producto producto = (Producto) cmbProductos.getSelectedItem();
+        if (producto != null) {
+            txtBuscar.setText(String.valueOf(producto.getCodigo()));
+            lblResultado.setText(
+                    producto.getNombre()
+                            + " | Precio: " + producto.getPrecioFinal()
+                            + " | Stock: " + producto.getStock());
+        }
     }
 
     // BUSCAR PRODUCTO
@@ -52,15 +94,24 @@ public class Inicio extends JFrame {
 
             int id = Integer.parseInt(txtBuscar.getText());
 
-            ProductoDescuento p = control.buscarProducto(id);
+            Producto producto = inventario.buscarPorCodigo(id);
 
-            if (p != null) {
+            if (producto != null) {
                 lblResultado.setText(
-                        p.getNombre() +
-                                " | Precio final: " + p.getPrecioFinal()
-                );
+                        producto.getNombre()
+                                + " | Precio: " + producto.getPrecioFinal()
+                                + " | Stock: " + producto.getStock());
+                cmbProductos.setSelectedItem(producto);
             } else {
-                lblResultado.setText("Producto no encontrado");
+                ProductoDescuento p = control.buscarProducto(id);
+                if (p != null) {
+                    lblResultado.setText(
+                            p.getNombre() +
+                                    " | Precio final: " + p.getPrecioFinal()
+                    );
+                } else {
+                    lblResultado.setText("Producto no encontrado");
+                }
             }
 
         } catch (Exception e) {
@@ -68,6 +119,34 @@ public class Inicio extends JFrame {
         }
     }
 
+    private void agregarAlCarrito() {
+        Producto producto = (Producto) cmbProductos.getSelectedItem();
+        if (producto == null) {
+            lblResultado.setText("Seleccione un producto del combo");
+            return;
+        }
+
+        try {
+            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
+            carrito.agregarProducto(producto, cantidad);
+
+            lblResultado.setText(
+                    "Agregado: " + producto.getNombre()
+                            + " x" + cantidad
+                            + " | Stock restante: " + producto.getStock()
+                            + " | Items en carrito: " + carrito.getProductos().size());
+
+        } catch (StockInsuficienteException e) {
+            lblResultado.setText(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Stock insuficiente", JOptionPane.WARNING_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            lblResultado.setText("Cantidad invalida");
+
+        } catch (IllegalArgumentException e) {
+            lblResultado.setText(e.getMessage());
+        }
+    }
+
 
 }
-
